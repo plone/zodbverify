@@ -1,0 +1,9 @@
+include *.rst
+include pyproject.toml
+
+recursive-include zodbverify *
+
+global-exclude *.pyc
+
+recursive-exclude news *
+exclude news
