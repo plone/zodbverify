@@ -2,6 +2,25 @@
 zodbverify
 ==========
 
+Overview
+========
+
+Verify a ZODB by iterating and loading all records.
+Report problems in detail.
+
+zodbverify is available as a standalone script and as addon for `plone.recipe.zope2instance`.
+
+Usage
+=====
+
+Script
+------
+
+TODO.
+
+Recipe
+------
+
 Source Code
 ===========
 
