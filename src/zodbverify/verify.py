@@ -13,8 +13,7 @@ import traceback
 logger = logging.getLogger("zodbverify")
 
 
-def verify_zodb(obj, debug=False):
-    storage = obj._p_jar._db._storage
+def verify_zodb(storage, debug=False):
     if not IStorageCurrentRecordIteration.providedBy(storage):
         raise TypeError(
             "ZODB storage {} does not implement record_iternext".format(storage)

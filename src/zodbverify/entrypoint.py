@@ -25,4 +25,4 @@ def zopectl_entry(self, arg):
     logging.basicConfig(level=logging.INFO)
     make_wsgi_app({}, self.options.configfile)
     app = Zope2.app()
-    verify_zodb(app, debug=options.debug)
+    verify_zodb(app._p_jar._db._storage, debug=options.debug)
