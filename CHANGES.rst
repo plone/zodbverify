@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+1.0.1 (2019-05-09)
+------------------
+
+Bug fixes:
+
+
+- Fix project description. [jensens] (#1)
+
+
 1.0 (2019-05-09)
 ----------------
 
