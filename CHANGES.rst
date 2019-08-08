@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+1.0.2 (2019-08-08)
+------------------
+
+Bug fixes:
+
+
+- Open Data.fs in read only mode. (#2)
+
+
 1.0.1 (2019-05-09)
 ------------------
 
