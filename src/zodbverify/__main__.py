@@ -30,7 +30,7 @@ def main(argv=sys.argv):
     options = parser.parse_args(argv[1:])
 
     logging.basicConfig(level=logging.INFO)
-    storage = FileStorage(options.zodbfile)
+    storage = FileStorage(options.zodbfile, read_only=True)
     verify_zodb(storage, debug=options.debug)
 
 
