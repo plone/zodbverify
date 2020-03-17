@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from collections import Counter
+from collections import defaultdict
 from ZODB.interfaces import IStorageCurrentRecordIteration
 from ZODB.serialize import PersistentUnpickler
+from ZODB.utils import oid_repr
 
 import io
 import logging
@@ -24,7 +25,8 @@ def verify_zodb(storage, debug=False):
     next_ = None
     count = 0
     errors = 0
-    issues = []
+    issues = defaultdict(list)
+    oids = []
     while True:
         count += 1
         oid, tid, data, next_ = storage.record_iternext(next_)
@@ -32,19 +34,21 @@ def verify_zodb(storage, debug=False):
         success, msg = verify_record(oid, data, debug)
         if not success:
             errors += 1
-            issues.append(msg)
+            issues[msg].append(oid_repr(oid))
+            # issues.append(msg)
+            oids.append(oid)
         if next_ is None:
             break
 
-    issues = Counter(sorted(issues))
     msg = ""
-    for value, amount in issues.items():
-        msg += "{}: {}\n".format(value, amount)
-
+    order = sorted(issues, key=lambda k: len(issues[k]), reverse=True)
+    for key in order:
+        oids = issues[key]
+        msg += "{}: {}\n{}\n\n".format(key, len(oids), ' '.join(oids))
     logger.info(
         "Done! Scanned {} records. \n"
         "Found {} records that could not be loaded. \n"
-        "Exceptions and how often they happened: \n"
+        "Exceptions, how often they happened and which oids are affected: \n\n"
         "{}".format(count, errors, msg)
     )
 
@@ -61,7 +65,7 @@ def verify_record(oid, data, debug=False):
     except Exception as e:
         input_file.seek(0)
         pickle = input_file.read()
-        logger.info("\nCould not process {} record {}:".format(class_info, repr(oid)))
+        logger.info("\nCould not process {} record {} ({!r}):".format(class_info, oid_repr(oid), oid))
         logger.info(repr(pickle))
         logger.info(traceback.format_exc())
         if debug and pos is not None:

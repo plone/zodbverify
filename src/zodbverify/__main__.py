@@ -5,6 +5,7 @@ import sys
 from ZODB.FileStorage import FileStorage
 
 from .verify import verify_zodb
+from .verify_oid import verify_oid
 
 
 def main(argv=sys.argv):
@@ -27,11 +28,21 @@ def main(argv=sys.argv):
         dest="debug",
         help="pause to debug broken pickles",
     )
+    parser.add_argument(
+        "-o",
+        "--oid",
+        action="store",
+        dest="oid",
+        help="oid to inspect",
+    )
     options = parser.parse_args(argv[1:])
 
     logging.basicConfig(level=logging.INFO)
     storage = FileStorage(options.zodbfile, read_only=True)
-    verify_zodb(storage, debug=options.debug)
+    if options.oid:
+        verify_oid(storage, options.oid, debug=options.debug)
+    else:
+        verify_zodb(storage, debug=options.debug)
 
 
 if __name__ == "__main__":
