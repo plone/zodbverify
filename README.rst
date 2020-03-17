@@ -27,14 +27,16 @@ Run i.e.::
 
 Usage::
 
-    zodbverify [-h] -f ZODBFILE [-D]
+    zodbverify [-h] -f ZODBFILE [-D] [-o OID]
 
     Verifies that all records in the database can be loaded.
 
     optional arguments:
       -h, --help            show this help message and exit
       -f ZODBFILE, --zodbfile ZODBFILE
+                            Path to file-storage
       -D, --debug           pause to debug broken pickles
+      -o OID, --oid OID     oid to inspect
 
 
 plone.recipe.zope2instance integration
@@ -44,12 +46,14 @@ The verification runs in the context of the initialized Zope application.
 
 Usage::
 
-    ./bin/instance zodbverify [-h] [-D]
+    ./bin/instance zodbverify [-h] [-D] [-o OID]
+
     Verifies that all records in the database can be loaded.
 
     optional arguments:
-      -h, --help   show this help message and exit
-      -D, --debug  pause to debug broken pickles
+      -h, --help         show this help message and exit
+      -D, --debug        pause to debug broken pickles
+      -o OID, --oid OID  oid to inspect
 
 
 Inspecting a single oid
