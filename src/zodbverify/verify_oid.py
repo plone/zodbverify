@@ -19,8 +19,14 @@ def verify_oid(storage, oid, debug=False, app=None):
             "ZODB storage {} does not implement record_iternext".format(storage)
         )
 
-    if not isinstance(oid, bytes):
-        oid = p64(int(oid, 0))
+    try:
+        # by default expect a 8-byte string (e.g. '0x22d17d')
+        # transform to a 64-bit long integer (e.g. b'\x00\x00\x00\x00\x00"\xd1}')
+        as_int = int(oid, 0)
+        oid = p64(as_int)
+    except ValueError:
+        # probably already a 64-bit long integer
+        pass
 
     if app:
         # use exitsing zope instance.
