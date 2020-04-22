@@ -8,6 +8,24 @@ Changelog
 
 .. towncrier release notes start
 
+1.1.0 (2020-04-22)
+------------------
+
+New features:
+
+
+- Show the affected oids for each error.
+  Inspect a single oid.
+  The idea is to run zodbverify on the whole database and from the output copy one oid and run it again to further inspect that object.
+  [pbauer] (#6)
+
+
+Bug fixes:
+
+
+- Minor packaging updates. (#1)
+
+
 1.0.2 (2019-08-08)
 ------------------
 
