@@ -65,7 +65,7 @@ To inspect a single oid in detail you can pass one of these to zodbverify::
 
   ./bin/instance zodbverify -o 0x2e929f
 
-This will output the pickle and the errot for that oid.
+This will output the pickle and the error for that oid.
 
 By also adding the debug-switch you will get two pdb's while the script runs::
 
