@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+1.2.0 (2022-07-06)
+------------------
+
+New features:
+
+
+- Improve debugging output: show all objects that reference a oid.
+  See `Philip's blog post <https://www.starzel.de/blog/zodb-debugging>`_ for more information.
+  See also discussion in `pull request 8 <https://github.com/plone/zodbverify/pull/8>`_.
+  [pbauer] (#8)
+
+
 1.1.0 (2020-04-22)
 ------------------
 
