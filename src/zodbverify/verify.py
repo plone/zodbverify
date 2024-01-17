@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
 from ZODB.interfaces import IStorageCurrentRecordIteration
-from ZODB.serialize import PersistentUnpickler
+try:
+    from ZODB.serialize import PersistentUnpickler
+except ImportError:
+    from .bbb import PersistentUnpickler
 from ZODB.utils import oid_repr
 
 import io
