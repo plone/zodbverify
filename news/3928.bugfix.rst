@@ -1,0 +1,1 @@
+Remove empty name ``namespace_packages`` setting from our ``setup.cfg``.  [maurits]
