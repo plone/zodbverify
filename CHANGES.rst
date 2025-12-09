@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+1.2.1 (2025-12-09)
+------------------
+
+Bug fixes:
+
+
+- Remove empty name ``namespace_packages`` setting from our ``setup.cfg``.  [maurits] (#3928)
+
+
 1.2.0 (2022-07-06)
 ------------------
 
