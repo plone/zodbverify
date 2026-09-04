@@ -1,0 +1,5 @@
+Report records whose class is not a subclass of ``persistent.Persistent``.
+Such a record unpickles fine on its own, so ``zodbverify`` used to pass it,
+but loading it through a connection fails with
+``TypeError: Cache values must be persistent objects``.
+[kunalKumar-13]
