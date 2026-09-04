@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
+from persistent import Persistent
+from ZODB.broken import Broken
+from ZODB.broken import find_global
 from ZODB.interfaces import IStorageCurrentRecordIteration
 from ZODB.serialize import PersistentUnpickler
 from ZODB.utils import oid_repr
@@ -82,7 +85,52 @@ def verify_record(oid, data, debug=False):
         # The same issues should have the same msg
         msg = "{}: {}".format(e.__class__.__name__, str(e))
         return False, msg
+
+    is_persistent, class_name = class_is_persistent(class_info)
+    if not is_persistent:
+        logger.info(
+            "\nRecord {} ({!r}) has class {}, "
+            "which is not a subclass of persistent.Persistent.".format(
+                oid_repr(oid), oid, class_name
+            )
+        )
+        if debug:
+            pdb.set_trace()
+        return False, "NotPersistent: {}".format(class_name)
     return True, None
+
+
+def class_is_persistent(class_info):
+    """Check the class of a record against persistent.Persistent.
+
+    Every record in a ZODB is an instance of a Persistent subclass. It is
+    possible to end up with a record that is not, for instance by using
+    zodbupdate to rename a persistent class to a non-persistent one. Such a
+    record unpickles fine on its own, so the checks above do not notice it,
+    but loading it through a connection fails later with
+    ``TypeError: Cache values must be persistent objects``.
+
+    The class is resolved the same way ZODB.serialize.ObjectReader.getGhost
+    resolves it. Returns a ``(is_persistent, class_name)`` tuple.
+    """
+    klass = class_info
+    if isinstance(klass, tuple):
+        klass, args = klass
+        if isinstance(klass, tuple):
+            # old style (module_name, class_name) reference
+            klass = find_global(*klass)
+
+    if not isinstance(klass, type):
+        return False, repr(klass)
+
+    class_name = "{}.{}".format(klass.__module__, klass.__name__)
+    if issubclass(klass, Broken):
+        # ZODB turns these into a PersistentBroken subclass while loading,
+        # so they are not what this check is looking for. A class that is
+        # broken because its module is gone is reported by the unpickling
+        # above instead.
+        return True, class_name
+    return issubclass(klass, Persistent), class_name
 
 
 def persistent_load(ref):
